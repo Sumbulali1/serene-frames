@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from 'react-router-dom';
 
 interface Image {
   url: string;
@@ -55,6 +56,9 @@ const Portfolio = () => {
   const categories = Array.from(new Set(images.map(img => img.category)));
   const locations = Array.from(new Set(images.map(img => img.location)));
 
+  const getCategorySlug = (category: string) => category.toLowerCase().replace(/\s+/g, '-');
+  const getLocationSlug = (location: string) => location.toLowerCase().replace(/\s+/g, '-');
+
   return (
     <div className="min-h-screen pt-24 pb-12 px-4 bg-background">
       <div className="container mx-auto max-w-7xl">
@@ -80,10 +84,10 @@ const Portfolio = () => {
             <TabsContent value="category">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
                 {categories.map((category) => (
-                  <div
+                  <Link
                     key={category}
+                    to={`/portfolio/${getCategorySlug(category)}`}
                     className="relative group cursor-pointer overflow-hidden"
-                    onClick={() => setCurrentFilter('category')}
                   >
                     {images.find(img => img.category === category) && (
                       <img
@@ -95,7 +99,7 @@ const Portfolio = () => {
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <h3 className="text-white text-xl font-serif">{category}</h3>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </TabsContent>
@@ -103,10 +107,10 @@ const Portfolio = () => {
             <TabsContent value="location">
               <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
                 {locations.map((location) => (
-                  <div
+                  <Link
                     key={location}
+                    to={`/portfolio/${getLocationSlug(location)}`}
                     className="relative group cursor-pointer overflow-hidden"
-                    onClick={() => setCurrentFilter('location')}
                   >
                     {images.find(img => img.location === location) && (
                       <img
@@ -118,7 +122,7 @@ const Portfolio = () => {
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <h3 className="text-white text-xl font-serif">{location}</h3>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </TabsContent>
